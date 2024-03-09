@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Attendance
+{% endblock title %}
+
+{% block content %}
+{% now "Y-m-d" as today %}
+<div class="container">   
+    
+    <section class="main">
+      <div class="main-top">
+        <h1>Attendance</h1>
+        <i class="fas fa-user-cog"></i>
+      </div>
+  
+      <section class="attendance">
+        <div class="attendance-list">
+          <h1>Update</h1>
+          <form method="post"> 
+            {% csrf_token %}
+          <table class="table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Take</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for i in attendance.marks.all %}
+              <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.student.full_name}}</td>
+                <td>
+                  <div class="form-check">
+                    <input type="checkbox" id="flexCheckChecked" name="checks{{i.id}}" class="form-check-input" {% if i.checks %} checked {% endif %}>
+                    <span class="slider round"></span>
+                  </div>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+          <button type="submit">confirmation</button>
+        </form>
+        </div>
+      </section>
+    </section>
+  </div>
+{% endblock content %}

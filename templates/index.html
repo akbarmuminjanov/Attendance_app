@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">   
+    
+  <section class="main">
+    <div class="main-top">
+      <div id="container">
+        <button class="face-button">
+          <span class="face-container">
+            <span class="eye left"></span>
+            <span class="eye right"></span>
+            <span class="mouth"></span>
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <section class="attendance">
+      <div class="attendance-list">
+        <h1>Index</h1>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>group_name</th>
+              <th>Date</th>
+              <th>Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for i in groups %}
+            <tr>
+              <td>{{forloop.counter}}</td>
+              <td>{{i.author.username}}</td>
+              <td>{{i.name}}</td>
+              <td>{{i.created|date:"Y-m-d"}}</td>
+              <td><button><a style="text-decoration: none;" href="{% url 'attendance' group_id=i.id  %}">View</a></button></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </section>
+</div>
+
+{% endblock content %}    

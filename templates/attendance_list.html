@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Attendance
+{% endblock title %}
+
+{% block content %}
+{% now "Y-m-d" as today %}
+<div class="container">   
+    
+    <section class="main">
+      <div class="main-top">
+        <h1>Attendance</h1>
+        <i class="fas fa-user-cog"></i>
+      </div>
+  
+      <section class="attendance">
+        <div class="attendance-list">
+          <h1>Attendance List</h1>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>group_name</th>
+                <th>TG_ID</th>
+                {% for i in group.students.first.marks.all %}
+
+                {% if today == i.attendance.created|date:"Y-m-d" %}
+                <th>{{i.attendance.created|date:"m-d"}}</th>
+                {% else %}
+                <th>{{i.attendance.created|date:"m-d"}}</th>
+                 {% endif %}
+                {% endfor %}
+              </tr>
+            </thead>
+            <tbody>
+              {% for i in group.students.all %}
+              <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.full_name}}</td>
+                <td>{{i.group.name}}</td>
+                <td>{{i.tg_id}}</td>
+                {% for att in i.marks.all %}
+                  {% if att.checks %}
+                      <td><i class="fa-solid fa-check"></i></td>
+                  {% else %}
+                      <td><i class="fa-solid fa-x"></i></td>
+                  {% endif %}
+                {% endfor %}
+            </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+          <button><a style="text-decoration: none;" href="{% url 'designation' group.id %}">Davomat olish</a></button>
+      
+          {% for i in group.students.first.marks.all %}
+
+          {% if today == i.attendance.created|date:"Y-m-d" %}
+          <button><a style="text-decoration: none;" href="{% url 'update' i.attendance.id %}">update</a></button>
+          
+          {% endif %}
+
+          {% endfor %}
+
+
+        </div>
+      </section>
+    </section>
+  </div>
+{% endblock content %}
