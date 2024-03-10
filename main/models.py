@@ -1,6 +1,7 @@
 from django.db import models
 from .utils import create_new_number
 from django.contrib.auth.models import User
+from django.utils import timezone
 # Create your models here.
 
 
@@ -26,7 +27,7 @@ class Student(models.Model):
 
 class Message(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    user = models.ForeignKey(Student, on_delete=models.CASCADE)
+    user = models.ForeignKey(Student, on_delete=models.CASCADE, related_name="messages")
     body = models.TextField()
     created = models.DateTimeField()
 
@@ -35,7 +36,7 @@ class Message(models.Model):
 
 class Attendance(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='attendances')
-    created = models.DateTimeField()
+    created = models.DateField(auto_now_add=True)
 
     def __str__(self):
         return str(self.group.name)

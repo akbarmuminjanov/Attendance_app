@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
+from datetime import datetime
 from datetime import date
 from .models import Group, Student, Message, Mark, Attendance
 from django.http import HttpResponse
 from .serialiser import MessageSerialiser, StudentSerialiser
-from rest_framework.views import APIView
+from rest_framework.views import APIView, Response
 
 # Create your views here.
 def index(request):
@@ -37,7 +38,8 @@ def designation(request, group_id):
     
 def update(request, attendance_id):
     attendance = Attendance.objects.get(id=attendance_id)
-    if attendance.created == date.today():
+    print(attendance.created, datetime.now().date())
+    if attendance.created == datetime.now().date():
         if request.method == "POST":
             marks = attendance.marks.all()
             for mark in marks:
@@ -54,8 +56,12 @@ def update(request, attendance_id):
         return HttpResponse("Only today's received attendances can be edited")
     
 
-# class MessageSrialiserApi(APIView):
-#     def get(self, request, user_id):
-#         message = Message.objects.get(id=user_id)
+class MessageSrialiserApi(APIView):
+    def get(self, request, tg_id):
+        student = Student.objects.get(tg_id=tg_id)
+
+        serializer = StudentSerialiser(student)
+
+        return Response(serializer.data)
 
         
