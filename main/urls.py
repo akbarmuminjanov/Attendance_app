@@ -2,7 +2,6 @@ from django.urls import path
 from .views import index, attendance, designation, update, MessageSrialiserApi
 
 
-
 urlpatterns = [
     path('', index, name="index"),
     path('attendance/<int:group_id>/', attendance, name='attendance'),
