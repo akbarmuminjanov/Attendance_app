@@ -3,8 +3,9 @@ from datetime import datetime
 from datetime import date
 from .models import Group, Student, Message, Mark, Attendance
 from django.http import HttpResponse
-from .serialiser import MessageSerialiser, StudentSerialiser
+from .serialiser import StudentSerialiser
 from rest_framework.views import APIView, Response
+from .forms import GroupForm, StudentForm, MessageForm
 
 # Create your views here.
 def index(request):
@@ -64,4 +65,7 @@ class MessageSrialiserApi(APIView):
 
         return Response(serializer.data)
 
+def add_categoty(request):
+    form = Group
+    return render(request, 'add_group.html', {'form':form})
         
