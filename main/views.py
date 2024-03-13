@@ -68,4 +68,4 @@ class MessageSrialiserApi(APIView):
 def add_categoty(request):
     form = Group
     return render(request, 'add_group.html', {'form':form})
-        
+# imtihon app # 
