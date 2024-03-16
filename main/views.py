@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from django.views import View
 from datetime import datetime
 from datetime import date
-from .models import Group, Student, Message, Mark, Attendance
-from django.http import HttpResponse
-from .serialiser import StudentSerialiser
 from rest_framework.views import APIView, Response
+from .models import Group, Student, Message, Mark, Attendance
+from .serialiser import StudentSerialiser
 from .forms import GroupForm, StudentForm, MessageForm
 
 # Create your views here.
@@ -55,7 +56,6 @@ def update(request, attendance_id):
         return render(request, "update.html", {'attendance':attendance})
     else:
         return HttpResponse("Only today's received attendances can be edited")
-    
 
 class MessageSrialiserApi(APIView):
     def get(self, request, tg_id):
@@ -65,7 +65,50 @@ class MessageSrialiserApi(APIView):
 
         return Response(serializer.data)
 
-def add_categoty(request):
-    form = Group
-    return render(request, 'add_group.html', {'form':form})
+class CreateGroupForm(View):
+    def get(self, request):
+        form = GroupForm()
+        return render(request, "add_group.html", {'form':form})
+    
+    def post(self, request):
+        form = GroupForm(data=request.POST, files=request.FILES)
+        if form.is_valid():
+            group = form.save(commit=False)
+            group.user = request.user
+            form.save()
+            print("success")
+            return redirect("index")
+        else:
+            return render(request, "add_group.html", {'form':form})
         
+class AddedStudentForm(View):
+    def get(self, request):
+        form = StudentForm()
+        return render(request, "add_student.html", {'form':form})
+    
+    def post(self, request):
+        form = StudentForm(data=request.POST, files=request.FILES)
+        if form.is_valid():
+            student = form.save(commit=False)
+            student.user = request.user
+            form.save()
+            print("success")
+            return redirect("index")
+        else:
+            return render(request, "add_student.html", {'form':form})
+        
+class AddMessages(View):
+    def get(self, request):
+        form = MessageForm()
+        return render(request, "add_mesaage.html", {'form':form})
+    
+    def post(self, request):
+        form = MessageForm(data=request.POST, files=request.FILES)
+        if form.is_valid():
+            message = form.save(commit=False)
+            message.user = request.user
+            form.save()
+            print("success")
+            return redirect("index")
+        else:
+            return render(request, "add_mesaage.html", {'form':form})

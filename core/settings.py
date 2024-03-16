@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'main',
     'rest_framework',
     'crispy_forms',
+    'crispy_bootstrap5',
 ]
 
 
