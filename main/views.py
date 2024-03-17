@@ -100,15 +100,15 @@ class AddedStudentForm(View):
 class AddMessages(View):
     def get(self, request):
         form = MessageForm()
-        return render(request, "add_mesaage.html", {'form':form})
+        return render(request, "add_message.html", {'form':form})
     
     def post(self, request):
         form = MessageForm(data=request.POST, files=request.FILES)
         if form.is_valid():
             message = form.save(commit=False)
-            message.user = request.user
+            message.author = request.user
             form.save()
             print("success")
             return redirect("index")
         else:
-            return render(request, "add_mesaage.html", {'form':form})
+            return render(request, "add_message.html", {'form':form})
